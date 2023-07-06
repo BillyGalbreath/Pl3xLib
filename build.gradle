@@ -1,0 +1,84 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'fabric-loom' version "$fabricLoomVersion"
+}
+
+defaultTasks 'build'
+
+project.group = 'net.pl3x.lib'
+project.version = "$pl3xlibVersion"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:$minecraftVersion"
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
+}
+
+jar {
+    archiveBaseName = "${project.name}"
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    filesMatching('fabric.mod.json') {
+        expand(
+                'version': project.version,
+                'fabricApiVersion': fabricApiVersion,
+                'fabricLoaderVersion': fabricLoaderVersion,
+                'minecraftVersion': minecraftVersion,
+        )
+    }
+}
+
+loom {
+    mixin {
+        defaultRefmapName = 'pl3xlib.refmap.json'
+    }
+    runConfigs.configureEach {
+        ideConfigGenerated(true)
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = 'public'
+            url = uri('https://repo.pl3x.net/public')
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            groupId = "net.pl3x.lib"
+            artifactId = "pl3xlib"
+            version = "${project.version}"
+            from components.java
+        }
+    }
+}

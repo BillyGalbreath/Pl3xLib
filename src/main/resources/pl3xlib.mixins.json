@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.pl3x.lib.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "pl3xlib.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "GameRendererMixin"
+  ]
+}

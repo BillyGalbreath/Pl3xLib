@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "pl3xlib",
+  "version": "${version}",
+  "name": "Pl3xLib",
+  "description": "Library for Pl3x mods",
+  "authors": [
+    "BillyGalbreath"
+  ],
+  "contact": {
+    "homepage": "https://github.com/BillyGalbreath/Pl3xLib/",
+    "issues": "https://github.com/BillyGalbreath/Pl3xLib/issues/"
+  },
+  "license": "MIT",
+  "icon": "logo.png",
+  "mixins": [
+    "pl3xlib.mixins.json"
+  ],
+  "depends": {
+    "fabric": ">=${fabricApiVersion}",
+    "java": ">=17"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/kHWFx7bFZh"
+      },
+      "badges": [
+        "library"
+      ],
+      "update_checker": false
+    }
+  }
+}
