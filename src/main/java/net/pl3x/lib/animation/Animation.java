@@ -41,7 +41,7 @@ public class Animation {
 
         if (step >= this.end) {
             this.finished = true;
-            this.value = 1;
+            this.value = this.end;
         }
     }
 
