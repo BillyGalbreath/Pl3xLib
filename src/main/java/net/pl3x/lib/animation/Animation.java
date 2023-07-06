@@ -39,7 +39,7 @@ public class Animation {
         float step = Mathf.inverseLerp(0, this.ticks, this.deltaSum += delta);
         this.value = lerp(this.start, this.end, step);
 
-        if (step >= this.end) {
+        if (this.value >= this.end) {
             this.finished = true;
             this.value = this.end;
         }
