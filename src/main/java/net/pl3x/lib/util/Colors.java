@@ -1,5 +1,6 @@
 package net.pl3x.lib.util;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import java.awt.Color;
 import org.jetbrains.annotations.NotNull;
 
@@ -170,5 +171,9 @@ public class Colors {
 
     public static @NotNull String toHex(int argb) {
         return String.format("#%06X", (0xFFFFFF & argb));
+    }
+
+    public static void setShaderColor(int color) {
+        RenderSystem.setShaderColor(red(color) / 255F, green(color) / 255F, blue(color) / 255F, alpha(color) / 255F);
     }
 }
