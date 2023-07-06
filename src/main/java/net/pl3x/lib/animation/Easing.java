@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import net.pl3x.lib.util.Mathf;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class Easing {
@@ -239,12 +240,12 @@ public class Easing {
 
         public static class Adapter implements JsonSerializer<Function>, JsonDeserializer<Function> {
             @Override
-            public JsonElement serialize(Function function, Type type, JsonSerializationContext context) {
+            public @NotNull JsonElement serialize(@NotNull Function function, @NotNull Type type, @NotNull JsonSerializationContext context) {
                 return new JsonPrimitive(function.name);
             }
 
             @Override
-            public Function deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+            public @NotNull Function deserialize(@NotNull JsonElement json, @NotNull Type type, @NotNull JsonDeserializationContext context) throws JsonParseException {
                 return Function.BY_NAME.get(json.getAsString());
             }
         }

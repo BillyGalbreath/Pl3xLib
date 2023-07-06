@@ -1,9 +1,11 @@
 package net.pl3x.lib.animation;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import net.pl3x.lib.util.Colors;
 import net.pl3x.lib.util.Mathf;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class Animation {
@@ -18,7 +20,9 @@ public class Animation {
     private boolean finished;
     private float value;
 
-    public Animation(float start, float end, int ticks, Easing.Function function) {
+    public Animation(float start, float end, int ticks, @NotNull Easing.Function function) {
+        Preconditions.checkNotNull(function, "Function cannot be null");
+
         this.start = start;
         this.end = end;
         this.ticks = ticks;
@@ -33,9 +37,9 @@ public class Animation {
 
     public void tickAnimation(float delta) {
         float step = Mathf.inverseLerp(0, this.ticks, this.deltaSum += delta);
-        this.value = lerp(this.start, this.end, step, this.function);
+        this.value = lerp(this.start, this.end, step);
 
-        if (step >= 1) {
+        if (step >= this.end) {
             this.finished = true;
             this.value = 1;
         }
@@ -49,15 +53,15 @@ public class Animation {
         return this.finished;
     }
 
-    public float lerp(float start, float end, float step, Easing.Function function) {
-        return isEnabled() ? Mathf.lerp(start, end, tween(step, function)) : end;
+    public float lerp(float start, float end, float step) {
+        return isEnabled() ? Mathf.lerp(start, end, tween(step)) : end;
     }
 
-    public int lerpARGB(int start, int end, float step, Easing.Function function) {
-        return isEnabled() ? Colors.lerpARGB(start, end, tween(step, function)) : end;
+    public int lerpARGB(int start, int end, float step) {
+        return isEnabled() ? Colors.lerpARGB(start, end, tween(step)) : end;
     }
 
-    public float tween(float step, Easing.Function function) {
-        return isEnabled() ? (function != null ? function.apply(step) : step) : step;
+    public float tween(float step) {
+        return isEnabled() ? this.function.apply(step) : step;
     }
 }
