@@ -1,15 +1,26 @@
-package net.pl3x.lib.animation;
+package net.pl3x.lib.gui.animation;
 
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import net.pl3x.lib.util.Colors;
 import net.pl3x.lib.util.Mathf;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unused")
 public class Animation {
-    public static final List<Animation> ANIMATIONS = new ArrayList<>();
+    private static final List<Animation> ANIMATIONS = new ArrayList<>();
+
+    public static void tick(float delta) {
+        Iterator<Animation> iter = ANIMATIONS.iterator();
+        while (iter.hasNext()) {
+            Animation animation = iter.next();
+            animation.tickAnimation(delta);
+            if (animation.isFinished()) {
+                iter.remove();
+            }
+        }
+    }
 
     private final float start;
     private final float end;

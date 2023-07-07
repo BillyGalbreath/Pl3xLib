@@ -9,10 +9,11 @@
   ],
   "contact": {
     "homepage": "https://github.com/BillyGalbreath/Pl3xLib/",
+    "sources": "https://github.com/BillyGalbreath/Pl3xLib/",
     "issues": "https://github.com/BillyGalbreath/Pl3xLib/issues/"
   },
   "license": "MIT",
-  "icon": "logo.png",
+  "icon": "assets/pl3xlib/textures/logo.png",
   "mixins": [
     "pl3xlib.mixins.json"
   ],
@@ -23,7 +24,8 @@
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.discord": "https://discord.gg/kHWFx7bFZh"
+        "modmenu.discord": "https://discord.gg/kHWFx7bFZh",
+        "modrinth.download.link": "https://modrinth.com/mod/pl3xlib/"
       },
       "badges": [
         "library"

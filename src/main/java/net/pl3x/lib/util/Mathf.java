@@ -2,7 +2,6 @@ package net.pl3x.lib.util;
 
 import net.minecraft.util.Mth;
 
-@SuppressWarnings("unused")
 public class Mathf {
     public static final float PI = (float) Math.PI;
     public static final float SQRT_OF_2 = Mathf.sqrt(2F);

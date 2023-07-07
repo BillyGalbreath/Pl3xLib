@@ -54,9 +54,6 @@ hs_err_pid*
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
-
 # Thumbnails
 ._*
 
@@ -120,12 +117,3 @@ run/
 build
 .gradle
 /*.jar
-
-# webmap crap
-/webmap/node_modules/
-/webmap/dist/
-/webmap/public/images/icon/registered
-/webmap/public/images/skins/2D
-/webmap/public/images/skins/3D
-/webmap/public/tiles
-/core/src/main/resources/web/

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import java.awt.Color;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unused")
 public class Colors {
     public static int lerpRGB(int color0, int color1, float delta) {
         if (color0 == color1) return color0;

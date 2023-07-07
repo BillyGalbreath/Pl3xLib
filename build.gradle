@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.modrinth.minotaur' version '2.+'
     id 'fabric-loom' version "$fabricLoomVersion"
 }
 
@@ -9,15 +10,9 @@ defaultTasks 'build'
 project.group = 'net.pl3x.lib'
 project.version = "$pl3xlibVersion"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 repositories {
     maven { url = 'https://maven.fabricmc.net/' }
-    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://maven.terraformersmc.com/' }
 }
 
 dependencies {
@@ -26,6 +21,15 @@ dependencies {
 
     modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
     modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
+    modImplementation "com.terraformersmc:modmenu:${modmenuVersion}"
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 jar {
@@ -39,6 +43,8 @@ compileJava {
 
 javadoc {
     options.encoding = 'UTF-8'
+    options.addBooleanOption('html5', true)
+    title = "${rootProject.name}-${project.version} API"
 }
 
 processResources {
@@ -81,4 +87,17 @@ publishing {
             from components.java
         }
     }
+}
+
+modrinth {
+    autoAddDependsOn = false
+    token = System.getenv('MODRINTH_TOKEN')
+    projectId = 'pl3xlib'
+    versionName = "${project.version}"
+    versionNumber = "${project.version}"
+    versionType = 'release'
+    uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get()
+    gameVersions.addAll(["${minecraftVersion}"])
+    loaders.addAll(['fabric'])
+    changelog = System.getenv('COMMIT_MESSAGE')
 }

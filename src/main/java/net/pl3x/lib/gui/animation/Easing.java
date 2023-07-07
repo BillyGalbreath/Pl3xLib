@@ -1,4 +1,4 @@
-package net.pl3x.lib.animation;
+package net.pl3x.lib.gui.animation;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -13,7 +13,6 @@ import java.util.Map;
 import net.pl3x.lib.util.Mathf;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unused")
 public class Easing {
     public static class Back {
         public static final Function in = new Function("back-in", Back::in);
@@ -234,7 +233,7 @@ public class Easing {
         }
 
         @FunctionalInterface
-        private interface PrimitiveFloat {
+        public interface PrimitiveFloat {
             float apply(float t);
         }
 
