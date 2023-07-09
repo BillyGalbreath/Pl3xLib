@@ -39,6 +39,8 @@ public class Animation {
         this.ticks = ticks;
         this.function = function;
 
+        this.value = start;
+
         ANIMATIONS.add(this);
     }
 
