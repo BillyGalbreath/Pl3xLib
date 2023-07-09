@@ -50,7 +50,7 @@ public class Animation {
         float step = Mathf.inverseLerp(0, this.ticks, this.deltaSum += delta);
         this.value = lerp(this.start, this.end, step);
 
-        if (this.value >= this.end) {
+        if (this.value >= this.end - 0.001F) {
             this.finished = true;
             this.value = this.end;
         }
