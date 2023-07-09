@@ -218,15 +218,100 @@ public class GL {
      */
     public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
                                  int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th) {
-        GL.drawTexture(gfx, texture, x, y, l, t, u0 / tw, v0 / th, (u0 + l) / tw, (v0 + t) / th);
-        GL.drawTexture(gfx, texture, x + l, y, w - l - r, t, (u0 + l) / tw, v0 / th, (u1 - r) / tw, (v0 + t) / th);
-        GL.drawTexture(gfx, texture, x + w - r, y, r, t, (u1 - r) / tw, v0 / th, u1 / tw, (v0 + t) / th);
-        GL.drawTexture(gfx, texture, x, y + t, l, h - t - b, u0 / tw, (v0 + t) / th, (u0 + l) / tw, (v1 - b) / th);
-        GL.drawTexture(gfx, texture, x + l, y + t, w - l - r, h - t - b, (u0 + l) / tw, (v0 + t) / th, (u1 - r) / tw, (v1 - b) / th);
-        GL.drawTexture(gfx, texture, x + w - r, y + t, r, h - t - b, (u1 - r) / tw, (v0 + t) / th, u1 / tw, (v1 - b) / th);
-        GL.drawTexture(gfx, texture, x, y + h - b, l, b, u0 / tw, (v1 - b) / th, (u0 + l) / tw, v1 / th);
-        GL.drawTexture(gfx, texture, x + l, y + h - b, w - l - r, b, (u0 + l) / tw, (v1 - b) / th, (u1 - r) / tw, v1 / th);
-        GL.drawTexture(gfx, texture, x + w - r, y + h - b, r, b, (u1 - r) / tw, (v1 - b) / th, u1 / tw, v1 / th);
+        nineSlice(gfx, texture, x, y, w, h, l, t, r, b, u0, v0, u1, v1, tw, th, 0xFFFFFFFF);
+    }
+
+    /**
+     * Proportionally scale an image by splitting it in a grid
+     * of nine parts, aka the 9-slice scaling technique.
+     *
+     * @param gfx     graphics context
+     * @param texture texture resource location
+     * @param x       x position on screen
+     * @param y       y position on screen
+     * @param w       width of texture on screen
+     * @param h       height of texture on screen
+     * @param l       left border slice thickness
+     * @param t       top border slice thickness
+     * @param r       right border slice thickness
+     * @param b       bottom border slice thickness
+     * @param u0      left texture coordinate
+     * @param v0      top texture coordinate
+     * @param u1      right texture coordinate
+     * @param v1      bottom texture coordinate
+     * @param tw      full texture width
+     * @param th      full texture height
+     * @param color   color mask
+     */
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
+                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int color) {
+        nineSlice(gfx, texture, x, y, w, h, l, t, r, b, u0, v0, u1, v1, tw, th, color, color);
+    }
+
+    /**
+     * Proportionally scale an image by splitting it in a grid
+     * of nine parts, aka the 9-slice scaling technique.
+     *
+     * @param gfx         graphics context
+     * @param texture     texture resource location
+     * @param x           x position on screen
+     * @param y           y position on screen
+     * @param w           width of texture on screen
+     * @param h           height of texture on screen
+     * @param l           left border slice thickness
+     * @param t           top border slice thickness
+     * @param r           right border slice thickness
+     * @param b           bottom border slice thickness
+     * @param u0          left texture coordinate
+     * @param v0          top texture coordinate
+     * @param u1          right texture coordinate
+     * @param v1          bottom texture coordinate
+     * @param tw          full texture width
+     * @param th          full texture height
+     * @param colorTop    top color mask
+     * @param colorBottom bottom color mask
+     */
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
+                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int colorTop, int colorBottom) {
+        nineSlice(gfx, texture, x, y, w, h, l, t, r, b, u0, v0, u1, v1, tw, th, colorTop, colorTop, colorBottom, colorBottom);
+    }
+
+    /**
+     * Proportionally scale an image by splitting it in a grid
+     * of nine parts, aka the 9-slice scaling technique.
+     *
+     * @param gfx              graphics context
+     * @param texture          texture resource location
+     * @param x                x position on screen
+     * @param y                y position on screen
+     * @param w                width of texture on screen
+     * @param h                height of texture on screen
+     * @param l                left border slice thickness
+     * @param t                top border slice thickness
+     * @param r                right border slice thickness
+     * @param b                bottom border slice thickness
+     * @param u0               left texture coordinate
+     * @param v0               top texture coordinate
+     * @param u1               right texture coordinate
+     * @param v1               bottom texture coordinate
+     * @param tw               full texture width
+     * @param th               full texture height
+     * @param colorTopLeft     top left color mask
+     * @param colorTopRight    top right color mask
+     * @param colorBottomLeft  bottom right color mask
+     * @param colorBottomRight bottom left color mask
+     */
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
+                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int colorTopLeft, int colorTopRight, int colorBottomRight, int colorBottomLeft) {
+        GL.drawTexture(gfx, texture, x, y, l, t, u0 / tw, v0 / th, (u0 + l) / tw, (v0 + t) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x + l, y, w - l - r, t, (u0 + l) / tw, v0 / th, (u1 - r) / tw, (v0 + t) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x + w - r, y, r, t, (u1 - r) / tw, v0 / th, u1 / tw, (v0 + t) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x, y + t, l, h - t - b, u0 / tw, (v0 + t) / th, (u0 + l) / tw, (v1 - b) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x + l, y + t, w - l - r, h - t - b, (u0 + l) / tw, (v0 + t) / th, (u1 - r) / tw, (v1 - b) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x + w - r, y + t, r, h - t - b, (u1 - r) / tw, (v0 + t) / th, u1 / tw, (v1 - b) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x, y + h - b, l, b, u0 / tw, (v1 - b) / th, (u0 + l) / tw, v1 / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x + l, y + h - b, w - l - r, b, (u0 + l) / tw, (v1 - b) / th, (u1 - r) / tw, v1 / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
+        GL.drawTexture(gfx, texture, x + w - r, y + h - b, r, b, (u1 - r) / tw, (v1 - b) / th, u1 / tw, v1 / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
     }
 
     public static void rotateScene(@NotNull GuiGraphics gfx, float pivotX, float pivotY, float width, float height, float degrees) {
