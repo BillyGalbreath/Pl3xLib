@@ -14,6 +14,14 @@ import net.pl3x.lib.util.Mathf;
 import org.jetbrains.annotations.NotNull;
 
 public class Easing {
+    public static class Linear {
+        public static final Function flat = new Function("linear-flat", Linear::flat);
+
+        public static float flat(float t) {
+            return t;
+        }
+    }
+
     public static class Back {
         public static final Function in = new Function("back-in", Back::in);
         public static final Function out = new Function("back-out", Back::out);
