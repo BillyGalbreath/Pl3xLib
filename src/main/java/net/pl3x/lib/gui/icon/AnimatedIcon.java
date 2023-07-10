@@ -19,7 +19,7 @@ public class AnimatedIcon extends Icon {
         super(texture);
         this.modWidth = width;
         this.modHeight = (float) height / width;
-        this.frames = Math.round(this.modHeight) - 1;
+        this.frames = Math.round(this.modHeight);
     }
 
     @Override
