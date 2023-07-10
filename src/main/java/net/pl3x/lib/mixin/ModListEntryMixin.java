@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class ModListEntryMixin {
     @Shadow
     @Final
-    private Mod mod;
+    public Mod mod;
 
     /**
      * We'll draw the mod icons, thank you very much.
