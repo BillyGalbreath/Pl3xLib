@@ -1,0 +1,5 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/resources/metadata/animation/AnimationMetadataSection frameHeight I
+accessible field net/minecraft/client/resources/metadata/animation/AnimationMetadataSection frameWidth I
+accessible field net/minecraft/client/resources/metadata/animation/AnimationMetadataSection frames Ljava/util/List;

@@ -1,7 +1,5 @@
 package net.pl3x.lib.gui.icon;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import java.io.InputStream;
@@ -13,8 +11,6 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
-import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,18 +25,10 @@ public class ModIcon {
         int size = 64 * Minecraft.getInstance().options.guiScale().get();
 
         try {
-            // test for icon image first
             ModMetadata modMeta = mod.getMetadata();
             String iconPath = modMeta.getIconPath(size).orElse("assets/" + modMeta.getId() + "/icon.png");
-            mod.findPath(iconPath).orElseThrow();
-
-            // try to load image mcmeta next
             try (InputStream inputStream = Files.newInputStream(mod.findPath(iconPath + ".mcmeta").orElseThrow())) {
-                JsonElement element = JsonParser.parseReader(new JsonReader(new InputStreamReader(inputStream)));
-                JsonObject animation = element.getAsJsonObject().getAsJsonObject("animation");
-                AnimationMetadataSection animationMeta = AnimationMetadataSection.SERIALIZER.fromJson(animation);
-                FrameSize frameSize = animationMeta.calculateFrameSize(size, size);
-                return new AnimatedIcon(texture, frameSize.width(), frameSize.height());
+                return new AnimatedIcon(texture, JsonParser.parseReader(new JsonReader(new InputStreamReader(inputStream))).getAsJsonObject().getAsJsonObject("animation"), size);
             }
         } catch (Throwable t) {
             return new Icon(texture);

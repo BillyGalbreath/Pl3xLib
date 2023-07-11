@@ -63,6 +63,7 @@ loom {
     mixin {
         defaultRefmapName = 'pl3xlib.refmap.json'
     }
+    accessWidenerPath = file('src/main/resources/pl3xlib.accesswidener')
     runConfigs.configureEach {
         ideConfigGenerated(true)
     }

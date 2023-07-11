@@ -24,7 +24,7 @@ public class Animation {
 
     private float start;
     private float end;
-    private int ticks;
+    private float ticks;
     private boolean repeat;
     private Easing.Function function;
 
@@ -39,11 +39,11 @@ public class Animation {
         this(start, end, ticks, Easing.Linear.flat);
     }
 
-    public Animation(float start, float end, int ticks, @NotNull Easing.Function function) {
+    public Animation(float start, float end, float ticks, @NotNull Easing.Function function) {
         this(start, end, ticks, false, function);
     }
 
-    public Animation(float start, float end, int ticks, boolean repeat, @NotNull Easing.Function function) {
+    public Animation(float start, float end, float ticks, boolean repeat, @NotNull Easing.Function function) {
         setStart(start);
         setEnd(end);
         setTicks(ticks);
@@ -71,11 +71,11 @@ public class Animation {
         return this.end = end;
     }
 
-    public int getTicks() {
+    public float getTicks() {
         return this.ticks;
     }
 
-    public int setTicks(int ticks) {
+    public float setTicks(float ticks) {
         return this.ticks = ticks;
     }
 

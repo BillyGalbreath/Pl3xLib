@@ -17,6 +17,7 @@
   "mixins": [
     "pl3xlib.mixins.json"
   ],
+  "accessWidener": "pl3xlib.accesswidener",
   "depends": {
     "fabric": ">=${fabricApiVersion}",
     "java": ">=17"
