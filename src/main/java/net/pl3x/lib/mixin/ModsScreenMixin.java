@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
-@Mixin(value = ModsScreen.class, remap = false)
+@Mixin(value = ModsScreen.class)
 public class ModsScreenMixin {
     @Shadow
     private ModListEntry selected;

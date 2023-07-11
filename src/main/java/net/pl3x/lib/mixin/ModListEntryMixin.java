@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
-@Mixin(value = ModListEntry.class, remap = false)
+@Mixin(value = ModListEntry.class)
 public class ModListEntryMixin {
     @Shadow
     @Final

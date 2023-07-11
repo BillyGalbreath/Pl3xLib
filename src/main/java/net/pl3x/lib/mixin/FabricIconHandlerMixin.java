@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(value = FabricIconHandler.class, remap = false)
+@Mixin(value = FabricIconHandler.class)
 public class FabricIconHandlerMixin {
     /**
      * Don't let ModMenu kill our icon if it's not a square (animations can't be square).
