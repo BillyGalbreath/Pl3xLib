@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 public class AnimatedIcon extends Icon {
     private final FrameSize size;
     private final int[] frames;
+    private final Animation animation;
 
-    private Animation animation = new Animation(0, 0, 0, Easing.Linear.flat);
     private int cur = -1;
 
     public AnimatedIcon(@NotNull ResourceLocation texture, @NotNull JsonObject animation, int size) {
@@ -33,16 +33,18 @@ public class AnimatedIcon extends Icon {
         for (AnimationFrame frame : meta.frames) {
             this.frames[frame.getIndex()] = frame.getTime(meta.getDefaultFrameTime());
         }
+
+        this.animation = new Animation(0, 1, this.frames[0], true, Easing.Linear.flat, anim -> {
+            if (++this.cur >= this.frames.length) {
+                this.cur = 0;
+            }
+            anim.setTicks(this.frames[this.cur] - 0.5F);
+        });
     }
 
     @Override
     public void render(GuiGraphics gfx, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
-        if (this.animation.isFinished()) {
-            if (++this.cur >= this.frames.length) {
-                this.cur = 0;
-            }
-            this.animation = new Animation(0, 1, this.frames[this.cur] - 0.5F, Easing.Linear.flat);
-        }
+        this.animation.start();
 
         @SuppressWarnings("IntegerDivisionInFloatingPointContext")
         float u0 = (this.cur / this.size.height()) / (float) this.size.width();

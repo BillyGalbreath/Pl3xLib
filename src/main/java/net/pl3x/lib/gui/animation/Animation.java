@@ -1,24 +1,29 @@
 package net.pl3x.lib.gui.animation;
 
 import com.google.common.base.Preconditions;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import net.pl3x.lib.util.Colors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import net.pl3x.lib.util.Mathf;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Animation {
-    private static final Set<Animation> ANIMATIONS = new HashSet<>();
+    private static final Set<Animation> ANIMATIONS = ConcurrentHashMap.newKeySet();
 
     public static void tick(float delta) {
-        Iterator<Animation> iter = ANIMATIONS.iterator();
-        while (iter.hasNext()) {
-            Animation animation = iter.next();
-            animation.tickAnimation(delta);
-            if (animation.isFinished()) {
-                iter.remove();
+        try {
+            Iterator<Animation> iter = ANIMATIONS.iterator();
+            while (iter.hasNext()) {
+                Animation animation = iter.next();
+                animation.tickAnimation(delta);
+                if (animation.isFinished()) {
+                    iter.remove();
+                }
             }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 
@@ -27,6 +32,7 @@ public class Animation {
     private float ticks;
     private boolean repeat;
     private Easing.Function function;
+    private Consumer<Animation> onFinish;
 
     private float deltaSum;
     private float value;
@@ -44,13 +50,18 @@ public class Animation {
     }
 
     public Animation(float start, float end, float ticks, boolean repeat, @NotNull Easing.Function function) {
-        setStart(start);
-        setEnd(end);
-        setTicks(ticks);
-        setRepeating(repeat);
-        setFunction(function);
+        this(start, end, ticks, repeat, function, null);
+    }
 
-        setValue(getStart());
+    public Animation(float start, float end, float ticks, boolean repeat, @NotNull Easing.Function function, @Nullable Consumer<Animation> onFinish) {
+        this.start = start;
+        this.end = end;
+        this.ticks = ticks;
+        this.repeat = repeat;
+        this.function = function;
+        this.onFinish = onFinish;
+
+        this.value = this.start;
 
         ANIMATIONS.add(this);
     }
@@ -87,15 +98,21 @@ public class Animation {
         return this.repeat = repeat;
     }
 
-    @NotNull
-    public Easing.Function getFunction() {
+    public @NotNull Easing.Function getFunction() {
         return this.function;
     }
 
-    @NotNull
-    public Easing.Function setFunction(@NotNull Easing.Function function) {
+    public @NotNull Easing.Function setFunction(@NotNull Easing.Function function) {
         Preconditions.checkNotNull(function, "Function cannot be null");
         return this.function = function;
+    }
+
+    public @Nullable Consumer<Animation> getOnFinish() {
+        return this.onFinish;
+    }
+
+    public @Nullable Consumer<Animation> setOnFinish(@Nullable Consumer<Animation> onFinish) {
+        return this.onFinish = onFinish;
     }
 
     public float getDeltaSum() {
@@ -114,12 +131,8 @@ public class Animation {
         return this.value = value;
     }
 
-    public boolean isEnabled() {
-        return true;
-    }
-
     public boolean isFinished() {
-        return getDeltaSum() >= getTicks();
+        return this.deltaSum >= this.ticks;
     }
 
     public void start() {
@@ -131,31 +144,26 @@ public class Animation {
     }
 
     public void reset() {
-        setDeltaSum(0);
-        setValue(getStart());
+        this.deltaSum = 0;
+        this.value = this.start;
     }
 
     public void tickAnimation(float delta) {
-        float step = Mathf.inverseLerp(0, getTicks(), setDeltaSum(getDeltaSum() + delta));
-        setValue(lerp(getStart(), getEnd(), step));
+        float step = Mathf.inverseLerp(0, this.ticks, this.deltaSum += delta);
+        this.value = Mathf.lerp(this.start, this.end, this.function.apply(step));
 
         if (isFinished()) {
-            setValue(getEnd());
-            if (isRepeating()) {
-                reset();
+            float oldTicks = this.ticks;
+            if (this.onFinish != null) {
+                this.onFinish.accept(this);
+            }
+            if (this.repeat) {
+                this.deltaSum -= (int) this.deltaSum;
+                this.deltaSum = Math.max(this.deltaSum - oldTicks, 0);
+                this.value = this.start;
+            } else {
+                this.value = this.end;
             }
         }
-    }
-
-    public float lerp(float start, float end, float step) {
-        return isEnabled() ? Mathf.lerp(start, end, tween(step)) : end;
-    }
-
-    public int lerpARGB(int start, int end, float step) {
-        return isEnabled() ? Colors.lerpARGB(start, end, tween(step)) : end;
-    }
-
-    public float tween(float step) {
-        return isEnabled() ? getFunction().apply(step) : step;
     }
 }
