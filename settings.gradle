@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'Pl3xLib'
+rootProject.name = 'pl3xlib'

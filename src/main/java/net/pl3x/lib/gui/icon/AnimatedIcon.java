@@ -43,10 +43,11 @@ public class AnimatedIcon extends Icon {
     }
 
     @Override
-    public void render(GuiGraphics gfx, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
+    public void render(@NotNull GuiGraphics gfx, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
         this.animation.start();
 
         @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+        // we're relying on integer division as a cheap floor since this is always positive
         float u0 = (this.cur / this.size.height()) / (float) this.size.width();
         float v0 = (this.cur % this.size.height()) / (float) this.size.height();
         float u1 = u0 + textureWidth / (float) (textureWidth * this.size.width());

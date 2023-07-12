@@ -18,7 +18,7 @@ public class ModsScreenMixin {
     @Shadow
     private ModListEntry selected;
 
-    /**
+    /*
      * We'll draw the mod icons, thank you very much.
      */
     @Redirect(
@@ -29,10 +29,10 @@ public class ModsScreenMixin {
                     ordinal = 0
             )
     )
-    private void render(GuiGraphics gfx, ResourceLocation texture, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight,
-                        GuiGraphics gfx2, int mouseX, int mouseY, float delta) {
+    private void render(GuiGraphics instance, ResourceLocation texture, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight,
+                        GuiGraphics gfx, int mouseX, int mouseY, float delta) {
         FabricLoader.getInstance().getModContainer(this.selected.mod.getId()).ifPresent(mod ->
-                ModIcon.getOrCreate(mod, texture).render(gfx, x, y, u, v, width, height, textureWidth, textureHeight)
+                ModIcon.getOrCreate(mod, texture).render(instance, x, y, u, v, width, height, textureWidth, textureHeight)
         );
     }
 }

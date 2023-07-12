@@ -20,7 +20,7 @@ public class ModListEntryMixin {
     @Final
     public Mod mod;
 
-    /**
+    /*
      * We'll draw the mod icons, thank you very much.
      */
     @Redirect(

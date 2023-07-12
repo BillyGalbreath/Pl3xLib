@@ -229,7 +229,7 @@ public class Easing {
         }
     }
 
-    public record Function(String name, PrimitiveFloat function) {
+    public record Function(@NotNull String name, @NotNull PrimitiveFloat function) {
         private static final Map<String, Function> BY_NAME = new HashMap<>();
 
         public Function {

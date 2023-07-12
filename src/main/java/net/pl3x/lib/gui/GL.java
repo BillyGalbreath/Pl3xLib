@@ -167,8 +167,7 @@ public class GL {
      * @param v1      bottom texture coordinate
      * @param s       full texture size
      */
-    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
-                                 int b, float u0, float v0, float u1, float v1, int s) {
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h, int b, float u0, float v0, float u1, float v1, int s) {
         nineSlice(gfx, texture, x, y, w, h, b, u0, v0, u1, v1, s, s);
     }
 
@@ -190,8 +189,7 @@ public class GL {
      * @param tw      full texture width
      * @param th      full texture height
      */
-    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
-                                 int b, float u0, float v0, float u1, float v1, int tw, int th) {
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h, int b, float u0, float v0, float u1, float v1, int tw, int th) {
         nineSlice(gfx, texture, x, y, w, h, b, b, b, b, u0, v0, u1, v1, tw, th);
     }
 
@@ -216,8 +214,7 @@ public class GL {
      * @param tw      full texture width
      * @param th      full texture height
      */
-    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
-                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th) {
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h, int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th) {
         nineSlice(gfx, texture, x, y, w, h, l, t, r, b, u0, v0, u1, v1, tw, th, 0xFFFFFFFF);
     }
 
@@ -243,8 +240,7 @@ public class GL {
      * @param th      full texture height
      * @param color   color mask
      */
-    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
-                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int color) {
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h, int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int color) {
         nineSlice(gfx, texture, x, y, w, h, l, t, r, b, u0, v0, u1, v1, tw, th, color, color);
     }
 
@@ -271,8 +267,7 @@ public class GL {
      * @param colorTop    top color mask
      * @param colorBottom bottom color mask
      */
-    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
-                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int colorTop, int colorBottom) {
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h, int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int colorTop, int colorBottom) {
         nineSlice(gfx, texture, x, y, w, h, l, t, r, b, u0, v0, u1, v1, tw, th, colorTop, colorTop, colorBottom, colorBottom);
     }
 
@@ -301,8 +296,7 @@ public class GL {
      * @param colorBottomLeft  bottom right color mask
      * @param colorBottomRight bottom left color mask
      */
-    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h,
-                                 int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int colorTopLeft, int colorTopRight, int colorBottomRight, int colorBottomLeft) {
+    public static void nineSlice(@NotNull GuiGraphics gfx, @NotNull ResourceLocation texture, int x, int y, int w, int h, int l, int t, int r, int b, float u0, float v0, float u1, float v1, int tw, int th, int colorTopLeft, int colorTopRight, int colorBottomRight, int colorBottomLeft) {
         GL.drawTexture(gfx, texture, x, y, l, t, u0 / tw, v0 / th, (u0 + l) / tw, (v0 + t) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
         GL.drawTexture(gfx, texture, x + l, y, w - l - r, t, (u0 + l) / tw, v0 / th, (u1 - r) / tw, (v0 + t) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);
         GL.drawTexture(gfx, texture, x + w - r, y, r, t, (u1 - r) / tw, v0 / th, u1 / tw, (v0 + t) / th, colorTopLeft, colorTopRight, colorBottomRight, colorBottomLeft);

@@ -21,7 +21,7 @@ public class ModIcon {
         return MOD_ICONS.computeIfAbsent(mod.getMetadata().getId(), k -> new ModIcon(createIcon(mod, texture)));
     }
 
-    public static Icon createIcon(@NotNull ModContainer mod, @NotNull ResourceLocation texture) {
+    public static @NotNull Icon createIcon(@NotNull ModContainer mod, @NotNull ResourceLocation texture) {
         int size = 64 * Minecraft.getInstance().options.guiScale().get();
 
         try {
@@ -37,11 +37,11 @@ public class ModIcon {
 
     private final Icon icon;
 
-    public ModIcon(Icon icon) {
+    public ModIcon(@NotNull Icon icon) {
         this.icon = icon;
     }
 
-    public void render(GuiGraphics gfx, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
+    public void render(@NotNull GuiGraphics gfx, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
         this.icon.render(gfx, x, y, u, v, width, height, textureWidth, textureHeight);
     }
 }
