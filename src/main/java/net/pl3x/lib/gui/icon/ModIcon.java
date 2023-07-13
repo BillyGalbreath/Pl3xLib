@@ -32,7 +32,7 @@ public class ModIcon {
             path = path.getParent().resolve("animated_" + path.getFileName());
             try (InputStream inputStream = Files.newInputStream(mod.findPath(path + ".mcmeta").orElseThrow())) {
                 return new AnimatedIcon(
-                        new ResourceLocation(modMeta.getId(), path.toString().replace(prefix, "").replace("\\", "/")),
+                        new ResourceLocation(modMeta.getId(), path.toString().replace("\\", "/").replace(prefix, "")),
                         JsonParser.parseReader(new JsonReader(new InputStreamReader(inputStream))).getAsJsonObject().getAsJsonObject("animation"),
                         size
                 );
