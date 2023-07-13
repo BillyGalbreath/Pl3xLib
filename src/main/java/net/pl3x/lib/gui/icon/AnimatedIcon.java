@@ -1,6 +1,7 @@
 package net.pl3x.lib.gui.icon;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.Arrays;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.metadata.animation.AnimationFrame;
@@ -17,7 +18,7 @@ public class AnimatedIcon extends Icon {
     private final int[] frames;
     private final Animation animation;
 
-    private int cur = -1;
+    private int currentFrame = 0;
 
     public AnimatedIcon(@NotNull ResourceLocation texture, @NotNull JsonObject animation, int size) {
         super(texture);
@@ -35,10 +36,10 @@ public class AnimatedIcon extends Icon {
         }
 
         this.animation = new Animation(0, 1, this.frames[0], true, Easing.Linear.flat, anim -> {
-            if (++this.cur >= this.frames.length) {
-                this.cur = 0;
+            if (++this.currentFrame >= this.frames.length) {
+                this.currentFrame = 0;
             }
-            anim.setTicks(this.frames[this.cur] - 0.5F);
+            anim.setTicks(this.frames[this.currentFrame] - 0.5F);
         });
     }
 
@@ -48,10 +49,12 @@ public class AnimatedIcon extends Icon {
 
         @SuppressWarnings("IntegerDivisionInFloatingPointContext")
         // we're relying on integer division as a cheap floor since this is always positive
-        float u0 = (this.cur / this.size.height()) / (float) this.size.width();
-        float v0 = (this.cur % this.size.height()) / (float) this.size.height();
+        float u0 = (this.currentFrame / this.size.height()) / (float) this.size.width();
+        float v0 = (this.currentFrame % this.size.height()) / (float) this.size.height();
         float u1 = u0 + textureWidth / (float) (textureWidth * this.size.width());
         float v1 = v0 + textureHeight / (float) (textureHeight * this.size.height());
+
+        RenderSystem.enableBlend();
 
         GL.drawTexture(gfx, getTexture(), x, y, width, height, u0, v0, u1, v1);
     }

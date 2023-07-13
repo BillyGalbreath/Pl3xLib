@@ -5,6 +5,7 @@ import com.google.gson.stream.JsonReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import net.fabricmc.loader.api.ModContainer;
@@ -26,9 +27,15 @@ public class ModIcon {
 
         try {
             ModMetadata modMeta = mod.getMetadata();
-            String iconPath = modMeta.getIconPath(size).orElse("assets/" + modMeta.getId() + "/icon.png");
-            try (InputStream inputStream = Files.newInputStream(mod.findPath(iconPath + ".mcmeta").orElseThrow())) {
-                return new AnimatedIcon(texture, JsonParser.parseReader(new JsonReader(new InputStreamReader(inputStream))).getAsJsonObject().getAsJsonObject("animation"), size);
+            String prefix = "assets/" + modMeta.getId() + "/";
+            Path path = Path.of(modMeta.getIconPath(size).orElse(prefix + "icon.png"));
+            path = path.getParent().resolve("animated_" + path.getFileName());
+            try (InputStream inputStream = Files.newInputStream(mod.findPath(path + ".mcmeta").orElseThrow())) {
+                return new AnimatedIcon(
+                        new ResourceLocation(modMeta.getId(), path.toString().replace(prefix, "").replace("\\", "/")),
+                        JsonParser.parseReader(new JsonReader(new InputStreamReader(inputStream))).getAsJsonObject().getAsJsonObject("animation"),
+                        size
+                );
             }
         } catch (Throwable t) {
             return new Icon(texture);
